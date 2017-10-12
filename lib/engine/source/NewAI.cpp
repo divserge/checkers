@@ -33,6 +33,11 @@ void NewAI::initialize(const Save& s)
 	_root.save = s;
 }
 
+Move NewAI::evaluate_game_ptr(Game* game) {
+	std::cerr << "trying" << std::endl;
+	evaluate_game(*game);
+}
+
 Move NewAI::evaluate_game(Game& g)
 {
 	const Save old_save = g.getSave();

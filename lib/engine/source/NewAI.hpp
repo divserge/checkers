@@ -37,6 +37,7 @@ public:
 	Move get_random_move() const;
 
 	Move evaluate_game(Game&);
+	Move evaluate_game_ptr(Game*);
 
 
 	void difficulty(unsigned difficulty)
