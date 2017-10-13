@@ -9,8 +9,6 @@ cdef class PyMove:
 		self.cmove.dst = dst
 		self.cmove.jump = jump
 
-	def kek(self):
-		return (self.cmove.src, self.cmove.dst, self.cmove.jump)
 
 
 cdef class PyGame:

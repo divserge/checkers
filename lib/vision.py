@@ -1,5 +1,6 @@
 import cv2
 import numpy as np
+from copy import copy, deepcopy
 
 def is_rect(poly):
     vecs = []
@@ -15,12 +16,12 @@ def is_rect(poly):
 
 # typical value for mindark is 120 and for superwhite is 190
 # needs to be adjust for different boards, draught types and lightening
-def get_rect(img, superwhite, mindark):
+def get_rect(img, white_figures_thresh, dark_cells_thresh):
     
     gray = cv2.cvtColor(img, cv2.COLOR_BGR2GRAY)
-    mask = cv2.inRange(gray, 0, superwhite)
+    mask = cv2.inRange(gray, 0, white_figures_thresh)
     gray = 255 - (gray & mask)
-    thresh = cv2.threshold(gray, mindark, 255, cv2.THRESH_BINARY)[1]
+    thresh = cv2.threshold(gray, 255 - dark_cells_thresh, 255, cv2.THRESH_BINARY)[1]
     ker = np.ones((4, 4), dtype=np.int0)
     
     thresh = cv2.dilate(copy(thresh), ker) # dilation to close blinks on each cell
@@ -40,7 +41,7 @@ def get_rect(img, superwhite, mindark):
     return rects, thresh, gray
 
 # -1 stands for black checkers, 1 stands for white checkers, 0 stands for empty cells
-def get_grid_from_rect_contours(rects):
+def get_grid_from_rect_contours(rects, img  ):
     
     mat = np.zeros((8, 4), dtype=np.int0)
     rect_cents = []
@@ -55,6 +56,7 @@ def get_grid_from_rect_contours(rects):
         for j, _ in enumerate(mat[i]):
             center =rect_cents[4 * i + j]
             color = img[int(center[1]), int(center[0])]
+            print('center: ', center, ' color ', color.mean())
             if color.mean() > 180:
                 mat[i][j] = 1
             elif color.mean() > 80:

@@ -1,5 +1,4 @@
 # setup.sh
-# Make the "myext" Python Module ("myext.so")
 CC="gcc"   \
 CXX="g++"   \
 CFLAGS="-I./source -I../../../DEPENDENCIES/python3.5/inc -I../../../DEPENDENCIES/gsl-1.15"   \
